@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NatureScape Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth animations */
+        img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .gallery-item {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .lightbox.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom toggle for dark mode */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 32px;
+            background-color: #d1d5db;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .toggle-switch.active {
+            background-color: #3b82f6;
+        }
+        
+        .toggle-dot {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-dot {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Header with Dark Mode Toggle -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex-1 text-center">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">NatureScape Gallery</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-300">Feature-rich masonry nature gallery</p>
+                </div>
+                
+         
+    </header>
+
+    <!-- Search and Filter Section -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Search images..." 
+                        class="w-full px-4 py-3 pl-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-300"
+                        onkeyup="filterGallery()">
+                    <svg class="absolute left-4 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterCategory('all')" class="filter-btn active px-4 py-2 rounded-full bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors" data-category="all">
+                    All
+                </button>
+                <button onclick="filterCategory('nature')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="nature">
+                    Nature
+                </button>
+                <button onclick="filterCategory('mountains')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="mountains">
+                    Mountains
+                </button>
+                <button onclick="filterCategory('ocean')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="ocean">
+                    Ocean
+                </button>
+                <button onclick="filterCategory('forest')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="forest">
+                    Forest
+                </button>
+            </div>
+
+            <!-- Stats Counter -->
+            <div class="mt-4 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <span>📸 <span id="totalImages">12</span> images</span>
+                <span>❤️ <span id="totalLikes">0</span> favorites</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        
+        <!-- Masonry Grid -->
+        <div id="galleryGrid" class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            
+            <!-- Image Card Template -->
+            <div class="gallery-item break-inside-avoid" data-category="mountains" data-title="Mountain Vista" data-description="Breathtaking mountain view">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=600&fit=crop" 
+                             alt="Mountain landscape" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        
+                        <!-- Overlay with actions -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Mountain Vista</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Breathtaking mountain view</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">mountains</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="forest" data-title="Forest Trail" data-description="Peaceful woodland path">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=500&h=400&fit=crop" 
+                             alt="Forest path" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Forest Trail</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Peaceful woodland path</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">forest</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="ocean" data-title="Ocean Serenity" data-description="Calm coastal waters">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500&h=700&fit=crop" 
+                             alt="Ocean waves" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Ocean Serenity</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Calm coastal waters</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded">ocean</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="nature" data-title="Wild Nature" data-description="Untouched wilderness">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=500&fit=crop" 
+                             alt="Dense forest" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Wild Nature</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Untouched wilderness</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded">nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="nature" data-title="Golden Hour" data-description="Spectacular sunset">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&h=650&fit=crop" 
+                             alt="Sunset sky" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Golden Hour</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Spectacular sunset</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded">nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="mountains" data-title="Alpine Lake" data-description="Crystal clear waters">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=500&h=550&fit=crop" 
+                             alt="Mountain lake" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Alpine Lake</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Crystal clear waters</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">mountains</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="mountains" data-title="Snow Peaks" data-description="Winter wonderland">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=500&h=450&fit=crop" 
+                             alt="Snowy peaks" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Snow Peaks</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Winter wonderland</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">mountains</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="ocean" data-title="Paradise Beach" data-description="Tropical getaway">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=500&h=600&fit=crop" 
+                             alt="Tropical beach" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Paradise Beach</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Tropical getaway</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded">ocean</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="nature" data-title="Desert Dunes" data-description="Sandy expanse">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=500&h=750&fit=crop" 
+                             alt="Desert landscape" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Desert Dunes</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sandy expanse</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded">nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="nature" data-title="Floral Meadow" data-description="Colorful blooms">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=500&h=500&fit=crop" 
+                             alt="Flower field" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Floral Meadow</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Colorful blooms</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200 rounded">nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="mountains" data-title="Rocky Terrain" data-description="Rugged beauty">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&h=650&fit=crop" 
+                             alt="Rocky mountains" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Rocky Terrain</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Rugged beauty</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded">mountains</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item break-inside-avoid" data-category="forest" data-title="Cascading Falls" data-description="Nature's power">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=500&h=550&fit=crop" 
+                             alt="Waterfall" 
+                             class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
+                             onclick="openLightbox(this)">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Cascading Falls</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Nature's power</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded">forest</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">No images found</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white hover:text-gray-300 z-50" onclick="closeLightbox()">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <div class="relative max-w-5xl max-h-screen p-4" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="" class="max-w-full max-h-[90vh] object-contain mx-auto rounded-lg shadow-2xl">
+            <div class="mt-4 text-center">
+                <h3 id="lightboxTitle" class="text-xl font-semibold text-white"></h3>
+                <p id="lightboxDesc" class="text-gray-300 mt-2"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 mt-12 border-t dark:border-gray-700 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-600 dark:text-gray-400">Advanced Gallery with Tailwind CSS • Filter • Search • Lightbox • Dark Mode</p>
+        </div>
+    </footer>
+
+    <script>
+        let likeCount = 0;
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+            
+            // Animate toggle
+            const toggle = document.getElementById('darkModeToggle');
+            if (isDark) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+
+        // Load dark mode preference on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('darkModeToggle').classList.add('active');
+            }
+        });
+
+        // Filter by Category
+        function filterCategory(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update button styles
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-500', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            event.target.classList.add('active', 'bg-blue-500', 'text-white');
+            
+            // Filter items
+            let visibleCount = 0;
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            updateImageCount(visibleCount);
+            checkNoResults(visibleCount);
+        }
+
+        // Search Function
+        function filterGallery() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.gallery-item');
+            let visibleCount = 0;
+            
+            items.forEach(item => {
+                const title = item.dataset.title.toLowerCase();
+                const description = item.dataset.description.toLowerCase();
+                const category = item.dataset.category.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            updateImageCount(visibleCount);
+            checkNoResults(visibleCount);
+        }
+
+        // Update image count
+        function updateImageCount(count) {
+            document.getElementById('totalImages').textContent = count;
+        }
+
+        // Check if no results
+        function checkNoResults(count) {
+            const noResults = document.getElementById('noResults');
+            if (count === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        // Toggle Like
+        function toggleLike(button) {
+            const svg = button.querySelector('svg');
+            const isLiked = svg.getAttribute('fill') === 'currentColor';
+            
+            if (isLiked) {
+                svg.setAttribute('fill', 'none');
+                likeCount--;
+                button.classList.remove('text-red-500');
+                button.classList.add('text-white');
+            } else {
+                svg.setAttribute('fill', 'currentColor');
+                likeCount++;
+                button.classList.remove('text-white');
+                button.classList.add('text-red-500');
+            }
+            
+            document.getElementById('totalLikes').textContent = likeCount;
+        }
+
+        // Open Lightbox
+        function openLightbox(img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImage');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxDesc = document.getElementById('lightboxDesc');
+            
+            const galleryItem = img.closest('.gallery-item');
+            
+            lightboxImg.src = img.src;
+            lightboxTitle.textContent = galleryItem.dataset.title;
+            lightboxDesc.textContent = galleryItem.dataset.description;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Lightbox
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Download Image
+        async function downloadImage(button) {
+            const img = button.closest('.gallery-item').querySelector('img');
+            const galleryItem = button.closest('.gallery-item');
+            const imageName = galleryItem.dataset.title.replace(/\s+/g, '-').toLowerCase();
+            
+            try {
+                // Fetch the image as a blob
+                const response = await fetch(img.src);
+                const blob = await response.blob();
+                
+                // Create a temporary URL for the blob
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                // Create a temporary link and trigger download
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = `${imageName}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up the blob URL
+                window.URL.revokeObjectURL(blobUrl);
+                
+                // Show success message (optional)
+                showNotification('Image downloaded successfully! ✓');
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Fallback: open image in new tab
+                window.open(img.src, '_blank');
+                showNotification('Image opened in new tab');
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Initialize count
+        updateImageCount(document.querySelectorAll('.gallery-item').length);
+    </script>
+
+</body>
+</html>
