@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NatureScape Gallery</title>
+    <title>Advanced Masonry Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Smooth animations */
@@ -105,7 +105,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
     
     <!-- Header with Dark Mode Toggle -->
     <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
@@ -180,15 +180,15 @@
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
                         
-                        <!-- Overlay with actions -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <!-- Overlay with actions - Always visible on mobile, hover on desktop -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -211,14 +211,14 @@
                              alt="Forest path" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -241,14 +241,14 @@
                              alt="Ocean waves" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -271,14 +271,14 @@
                              alt="Dense forest" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -301,14 +301,14 @@
                              alt="Sunset sky" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -331,14 +331,14 @@
                              alt="Mountain lake" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -361,14 +361,14 @@
                              alt="Snowy peaks" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -391,14 +391,14 @@
                              alt="Tropical beach" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -421,14 +421,14 @@
                              alt="Desert landscape" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -451,14 +451,14 @@
                              alt="Flower field" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -481,14 +481,14 @@
                              alt="Rocky mountains" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
@@ -511,14 +511,14 @@
                              alt="Waterfall" 
                              class="w-full h-auto object-cover cursor-pointer group-hover:scale-110 transition-transform duration-500"
                              onclick="openLightbox(this)">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
-                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); toggleLike(this)" class="like-btn text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
-                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform">
+                                <button onclick="event.stopPropagation(); downloadImage(this)" class="text-white hover:scale-125 transition-transform bg-black/30 backdrop-blur-sm rounded-full p-2">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
